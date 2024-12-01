@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Link, Links } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import { FaBookOpen } from "react-icons/fa6";
 import { IoMdSearch } from "react-icons/io";
 import { HiOutlineUserCircle } from "react-icons/hi2";
@@ -17,7 +17,7 @@ const navigation = [
 
 const NavBar = () => {
 
-    const currentUser = true;
+    const currentUser = false;
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef(null);
@@ -36,10 +36,11 @@ const NavBar = () => {
     }, []);
 
     return (
-        <header className="max-w-screen-2x1 mx-auto px-4 py-6">
+        <header className="max-w-screen-2xl mx-auto px-4 py-6">
             <nav className="flex justify-between items-center">
                 {/* left side */}
                 <div className="flex items-center md:gap-16 gap-4">
+                    {/* Logo */}
                     <Link to="/" onClick={() => setIsDropdownOpen(false)}>
                     <FaBookOpen className="size-6"/>
                     </Link>
@@ -59,6 +60,7 @@ const NavBar = () => {
                     <div className="">
                         {
                             currentUser ? <>
+                            {/* User Avatar */}
                             <button onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
                                 <img src={avatarImg} alt="Avatar" className = { `relative size-7 inset-y-0.5 rounded-full 
                                     ${currentUser ? 'ring-2 ring-blue-500' : ''} `}/>
@@ -85,10 +87,11 @@ const NavBar = () => {
                             </>: <Link to="/login"><HiOutlineUserCircle className="size-6"/></Link>
                         }
                     </div>
-                    
+                    {/* Favorite Logo */}
                     <button className="hidden sm:block">
                         <HiOutlineHeart className="size-6"/>
                     </button>
+                    {/* Cart */}
                     <Link to="/cart" className="bg-primary p-1 sm:px-4 px-2 flex items-center rounded-sm">
                         <HiOutlineShoppingBag className="size-6"/>
                         <span className="text-sm font-semi-bold sm:ml-1">0</span>
