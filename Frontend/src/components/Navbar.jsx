@@ -7,6 +7,7 @@ import { HiOutlineHeart } from "react-icons/hi";
 import { HiOutlineShoppingBag } from "react-icons/hi2";
 
 import avatarImg from "../assets/avatar.png";
+import { useSelector } from "react-redux";
 
 const navigation = [
     {name: "Dashboard", href: "/dashboard"},
@@ -16,6 +17,8 @@ const navigation = [
 ]
 
 const NavBar = () => {
+
+    const cartItems = useSelector(state => state.cart.cartItems);
 
     const currentUser = false;
 
@@ -36,8 +39,8 @@ const NavBar = () => {
     }, []);
 
     return (
-        <header className="max-w-screen-2xl mx-auto px-4 py-6">
-            <nav className="flex justify-between items-center">
+        <header className="fixed top-0 left-0 right-0 bg-white shadow-md z-50">
+            <nav className="max-w-screen-2xl mx-auto px-4 py-4 flex justify-between items-center">
                 {/* left side */}
                 <div className="flex items-center md:gap-16 gap-4">
                     {/* Logo */}
@@ -94,7 +97,9 @@ const NavBar = () => {
                     {/* Cart */}
                     <Link to="/cart" className="bg-primary p-1 sm:px-4 px-2 flex items-center rounded-sm">
                         <HiOutlineShoppingBag className="size-6"/>
-                        <span className="text-sm font-semi-bold sm:ml-1">0</span>
+                        {
+                            cartItems.length > 0 && <span className="text-sm font-semi-bold sm:ml-1">{cartItems.length}</span>
+                        }
                     </Link>
                 </div>
             </nav>
