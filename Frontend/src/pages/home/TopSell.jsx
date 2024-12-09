@@ -8,6 +8,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
 import { BookCard } from '../books/BookCard';
+import { useFetchAllBooksQuery } from '../../redux/features/book/booksApi';
 
 const categories = [
   "Business", "Fiction", "Horror", "Romance", "Science Fiction",
@@ -17,17 +18,13 @@ const categories = [
 ];
 
 const TopSell = () => {
-  const [books, setBooks] = useState([]);
+  
   const [selectedCategory, setSelectedCategory] = useState("Choose a genre");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const dropdownRef = useRef(null);
 
-  useEffect(() => {
-    fetch("books.json")
-      .then(res => res.json())
-      .then(data => setBooks(data));
-  }, []);
+  const {data: books = []} = useFetchAllBooksQuery();
 
   // Close the dropdown when clicking outside
   useEffect(() => {

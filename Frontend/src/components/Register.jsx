@@ -2,20 +2,40 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useForm } from "react-hook-form"
 import { FcGoogle } from "react-icons/fc";
+import { useAuth } from "../context/AuthContext";
 
 const Register = () => {
     const [message, setMessage] = useState('')
+    const {registerUser, googleSignIn} = useAuth()
     const {
         register,
         handleSubmit,
         watch,
         formState: { errors },
       } = useForm()
+    
+    // register a user
 
-    const onSubmit = (data) => console.log(data)
+    const onSubmit = async (data) => {
 
-    const handleGoogleSignIn = () => {
-        
+        try {
+            await registerUser(data.email, data.password)
+            alert('User registered successfully')
+        } catch (error) {
+            setMessage('Please enter valid email and password')
+            console.log(error)
+        }
+    }
+
+    const handleGoogleSignIn = async () => {
+        try {
+            await googleSignIn()
+            alert('User logged in successfully')
+            navigate('/')
+        } catch (error) {
+            alert('Google sign in failed')
+            console.log(error)
+        }
     }
   return (
     <div className='h-[calc(100vh-120px)] flex justify-center items-center'>

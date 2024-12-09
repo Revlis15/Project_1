@@ -8,6 +8,7 @@ import { HiOutlineShoppingBag } from "react-icons/hi2";
 
 import avatarImg from "../assets/avatar.png";
 import { useSelector } from "react-redux";
+import { useAuth } from "../context/AuthContext";
 
 const navigation = [
     {name: "Dashboard", href: "/dashboard"},
@@ -18,10 +19,17 @@ const navigation = [
 
 const NavBar = () => {
 
+    const {currentUser, logoutUser} = useAuth();
+
+    const handleLogout = async () => {
+        try {
+            await logoutUser();
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     const cartItems = useSelector(state => state.cart.cartItems);
-
-    const currentUser = false;
-
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef(null);
 
@@ -83,6 +91,11 @@ const NavBar = () => {
                                                 </li>
                                             ))
                                         }
+                                        <li onClick={handleLogout}>
+                                            <button className="block px-4 py-2 text-sm hover:bg-gray-100 w-full text-left">
+                                            Logout
+                                            </button>
+                                        </li>
                                         </ul>
                                     </div>
                                 )
