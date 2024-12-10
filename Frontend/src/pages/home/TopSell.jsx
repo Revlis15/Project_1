@@ -11,6 +11,7 @@ import { BookCard } from '../books/BookCard';
 import { useFetchAllBooksQuery } from '../../redux/features/book/booksApi';
 
 const categories = [
+  "All categories",
   "Business", "Fiction", "Horror", "Romance", "Science Fiction",
   "Thriller", "Adventure", "Biography", "Children", "Comics",
   "Cooking", "History", "Mystery", "Poetry", "Religion",
@@ -19,7 +20,7 @@ const categories = [
 
 const TopSell = () => {
   
-  const [selectedCategory, setSelectedCategory] = useState("Choose a genre");
+  const [selectedCategory, setSelectedCategory] = useState("All categories");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const dropdownRef = useRef(null);
@@ -53,7 +54,7 @@ const TopSell = () => {
   );
 
   // Filter books based on selected category
-  const filteredBooks = selectedCategory === "Choose a genre"
+  const filteredBooks = selectedCategory === "All categories"
     ? books
     : books.filter(book => book.category.toLowerCase() === selectedCategory.toLowerCase());
 

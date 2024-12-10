@@ -56,6 +56,7 @@ const AuthProvide = ({children}) => {
 
     const value = {
         currentUser,
+        loading,
         registerUser,
         loginUser,
         googleSignIn,

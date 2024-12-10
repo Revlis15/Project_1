@@ -21,7 +21,7 @@
   }
 
  .swiper-button-prev {
-    @apply bg-white p-5 rounded-full z-50 shadow-md 
+   display: none !important;
  }
  .swiper-button-next{
     @apply bg-white p-5 rounded-full z-50 shadow-md

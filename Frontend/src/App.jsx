@@ -12,10 +12,10 @@ function App() {
     <>
     <AuthProvide>
       <NavBar/>
-        <main className='min-h-screen max-w-screen-2x1 mx-auto px-4 py-6 font-primary pt-24'>
+        <main className='min-h-screen max-w-screen-2xl mx-auto px-5 py-6 font-primary pt-24'>
         <Outlet />
         </main>
-      <Footer/>
+      <Footer className=''/>
     </AuthProvide>
     </>
   )
