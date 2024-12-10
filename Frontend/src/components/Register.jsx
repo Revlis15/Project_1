@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useForm } from "react-hook-form"
 import { FcGoogle } from "react-icons/fc";
@@ -7,6 +7,7 @@ import { useAuth } from "../context/AuthContext";
 const Register = () => {
     const [message, setMessage] = useState('')
     const {registerUser, googleSignIn} = useAuth()
+    const navigate = useNavigate()
     const {
         register,
         handleSubmit,
