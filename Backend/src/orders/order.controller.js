@@ -26,7 +26,33 @@ const getOrderByEmail = async (req, res) => {
     }
 }
 
+const getAllOrders = async (req, res) => {
+  try {
+    const orders = await Order.find({}).sort({ createdAt: -1 });
+    res.json(orders);
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to fetch orders' });
+  }
+};
+
+const updateOrderStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+    const updatedOrder = await Order.findByIdAndUpdate(
+      id,
+      { status },
+      { new: true }
+    );
+    res.json(updatedOrder);
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to update order status' });
+  }
+};
+
 module.exports = {
     createAOrder,
-    getOrderByEmail
+    getOrderByEmail,
+    getAllOrders,
+    updateOrderStatus
 };

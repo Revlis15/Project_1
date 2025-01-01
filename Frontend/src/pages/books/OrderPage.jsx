@@ -1,12 +1,12 @@
-
 import { useAuth } from '../../context/AuthContext';
 import { useGetOrderByEmailQuery } from '../../redux/features/order/ordersApi';
+import Loading from '../../components/Loading';
 
 const OrderPage = () => {
     const {currentUser} = useAuth();
     const {data: orders = [], isLoading, isError} = useGetOrderByEmailQuery(currentUser?.email);
     if(isLoading){
-        return <div>Loading...</div>
+        return <Loading />
     }
     if(isError){
         return <div>Error fetching orders</div>
@@ -17,7 +17,7 @@ const OrderPage = () => {
         <h2 className='text-2xl font-semibold mb-4'>Your Orders</h2>
         {
             orders.length === 0 ? (<div>No orders found</div>) : (
-                <div>
+                <div className='h-96 overflow-y-auto mt-5'>
                     {
                         orders.map((order, index) => (
                             <div key = {order._id} className='border-b mb-4 pb-4'>

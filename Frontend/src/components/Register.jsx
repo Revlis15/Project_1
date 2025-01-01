@@ -20,8 +20,9 @@ const Register = () => {
     const onSubmit = async (data) => {
 
         try {
-            await registerUser(data.email, data.password)
+            await registerUser(data.email, data.password, data.username)
             alert('User registered successfully')
+            navigate('/')
         } catch (error) {
             setMessage('Please enter valid email and password')
             console.log(error)
@@ -44,6 +45,14 @@ const Register = () => {
             <h2 className="text-xl font-semibold mb-4">Please Register</h2>
 
             <form onSubmit={handleSubmit(onSubmit)}>
+                <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">Username</label>
+                    <input 
+                    {...register("username", { required: true })}
+                    type="text" name="username" id="username" placeholder="Username"
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 
+                    leading-tight focus:outline-none focus:shadow-outline"/>
+                </div>
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">Email</label>
                     <input 

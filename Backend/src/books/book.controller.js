@@ -1,4 +1,5 @@
 const Book = require('./book.model');
+const Joi = require('joi'); 
 
 const postABook = async (req, res) => {
     try{
@@ -79,10 +80,36 @@ const deleteBook = async (req, res) => {
     }
 }
 
+const searchBook = async (req, res) => {
+    const schema = Joi.object({
+        q: Joi.string().min(3).required()
+    });
+
+    const { error, value } = schema.validate(req.query);
+    if (error) {
+        return res.status(400).json({ message: 'Invalid search query' });
+    }
+
+    const query = value.q;
+    try {
+        const books = await Book.find({
+            $or: [
+                { title: { $regex: query, $options: 'i' } },
+                { description: { $regex: query, $options: 'i' } }
+            ]
+        }).limit(10);
+        res.json(books);
+    } catch (error) {
+        console.error("Search error:", error);
+        res.status(500).json({ message: 'Server Error' });
+    }
+}
+
 module.exports = {
     postABook,
     getAllBooks,
     getABook,
     updateBook,
-    deleteBook
+    deleteBook,
+    searchBook
 };

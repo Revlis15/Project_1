@@ -35,6 +35,7 @@ const TopSell = () => {
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
+
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
@@ -45,7 +46,7 @@ const TopSell = () => {
   const handleCategorySelect = (category) => {
     setSelectedCategory(category);
     setIsDropdownOpen(false);
-    setSearchTerm(''); // Reset search term when a category is selected
+    setSearchTerm(''); 
   };
 
   // Filter categories based on search term
@@ -54,7 +55,7 @@ const TopSell = () => {
   );
 
   // Filter books based on selected category
-  const filteredBooks = selectedCategory === "All categories"
+  const filteredBooks = selectedCategory === "All categories" 
     ? books
     : books.filter(book => book.category.toLowerCase() === selectedCategory.toLowerCase());
 
@@ -71,6 +72,7 @@ const TopSell = () => {
           {selectedCategory}
         </button>
         
+        {/* Dropdown */}
         {isDropdownOpen && (
           <div
             ref={dropdownRef}

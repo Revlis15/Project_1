@@ -3,11 +3,14 @@ import { useState } from "react";
 import { useForm } from "react-hook-form"
 import axios from "axios"
 import getBaseUrl from "../utils/baseURL";
+import { useAuth } from "../context/AuthContext"; // Ensure correct import
+import {jwtDecode} from "jwt-decode"; // Correct default import
 
 const Admin = () => {
 
     const [message, setMessage] = useState('')
     const navigate = useNavigate()
+    const { setCurrentUser, setUserRole } = useAuth() 
 
     const {
         register,
@@ -27,9 +30,14 @@ const Admin = () => {
             console.log(auth)
             if (auth.token) {
                 localStorage.setItem('token', auth.token)
+                // Decode token to get user info
+                const decodedToken = jwtDecode(auth.token); // Use jwtDecode as default
+                // Update AuthContext
+                setCurrentUser({ uid: decodedToken.id, email: decodedToken.username });
+                setUserRole(decodedToken.role);
                 setTimeout(() => {
                     localStorage.removeItem('token')
-                    alert('Token has been expried!, Please login again')
+                    alert('Token has expired! Please login again')
                     navigate("/admin")
                 },3600 * 1000);
             }
@@ -42,7 +50,6 @@ const Admin = () => {
     }
 
   return (
-    
 
     <div className='h-screen flex justify-center items-center'>
         <div className="w-full max-w-sm mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
@@ -66,7 +73,7 @@ const Admin = () => {
                     leading-tight focus:outline-none focus:shadow-outline"/>
                 </div>
                 {
-                    message && <p className="text-red-500 text-xs italic mb-3">Please enter valid email and password</p>
+                    message && <p className="text-red-500 text-xs italic mb-3">Please enter valid username and password</p>
                 }
                 <div className="">
                     <button className="bg-blue-500 hover:bg-blue-700 text-white w-full font-bold 

@@ -1,4 +1,4 @@
-import {createBrowserRouter} from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import Home from "../pages/home/Home";
 import Login from "../components/Login";
@@ -15,12 +15,17 @@ import Dashboard from "../pages/dashboard/Dashboard";
 import ManageBooks from "../pages/dashboard/manageBooks/ManageBooks";
 import AddBook from "../pages/dashboard/addBook/AddBook";
 import UpdataBook from "../pages/dashboard/editbook/UpdataBook";
-
+import AuthProvide from '../context/AuthContext'; 
+import OrdersStatus from "../pages/dashboard/OrdersStatus";
 
 const router = createBrowserRouter([
     {
       path: "/",
-      element: <App/>,
+      element: (
+        <AuthProvide>
+          <App />
+        </AuthProvide>
+      ),
       children: [
         {
             path: "/",
@@ -53,38 +58,42 @@ const router = createBrowserRouter([
         {
             path: "/books/:id" ,
             element: <SingleBook/>,
+        },
+        {
+            path: "/admin",
+            element: <Admin/> 
+        },
+        {
+            path: "/dashboard",
+            element: (
+                <AdminRoute>
+                    <DashboardLayout />
+                </AdminRoute>
+            ),
+            children: [
+                {
+                    index: true,
+                    element: <Dashboard/>
+                },
+                {
+                    path: "add-new-book",
+                    element: <AddBook/>
+                },
+                {
+                    path: "edit-book/:id",
+                    element: <UpdataBook/>
+                },
+                {
+                    path: "manage-books",
+                    element: <ManageBooks/>
+                },
+                {
+                    path: "orders-status",
+                    element: <OrdersStatus/>
+                }
+            ]
         }
-    ]
-    },
-    {
-        path: "/admin",
-        element: <Admin/>
-    },
-    {
-        path: "/dashboard",
-        element: <AdminRoute>
-                    <DashboardLayout/>
-                </AdminRoute>,
-        children:[
-            {
-                path: "",
-                element: <AdminRoute><Dashboard/></AdminRoute>
-            },
-            {
-                path: "add-new-book",
-                element: <AdminRoute><AddBook/></AdminRoute>
-            
-            },
-            {
-                path: "edit-book/:id",
-                element: <AdminRoute><UpdataBook/></AdminRoute>
-            
-            },
-            {
-                path: "manage-books",
-                element: <AdminRoute><ManageBooks/></AdminRoute>
-            }
-        ]
+      ]
     }
 ]);
 

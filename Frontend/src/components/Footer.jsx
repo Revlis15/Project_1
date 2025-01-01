@@ -4,9 +4,9 @@ import { FaFacebook, FaInstagram, FaTwitter } from "react-icons/fa"
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-900 text-white max-w-screen-2xl py-10 px-4">
+    <footer className="bg-gray-900 text-white py-10 px-10">
       {/* Top Section */}
-      <div className="container mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+      <div className="mx-auto flex flex-col md:flex-row justify-between items-center gap-8 ">
         {/* Left Side - Logo and Nav */}
         <div className="md:w-1/2 w-full">
           <img src={footerLogo} alt="Logo" className="mb-5 w-36" />
@@ -37,7 +37,7 @@ const Footer = () => {
       </div>
 
       {/* Bottom Section */}
-      <div className="container mx-auto flex flex-col md:flex-row justify-between items-center mt-10 border-t border-gray-700 pt-6">
+      <div className=" mx-auto flex flex-col md:flex-row justify-between items-center mt-10 border-t border-gray-700 pt-6">
         {/* Left Side - Privacy Links */}
         <ul className="flex gap-6 mb-4 md:mb-0">
           <li><a href="#privacy" className="hover:text-primary">Privacy Policy</a></li>

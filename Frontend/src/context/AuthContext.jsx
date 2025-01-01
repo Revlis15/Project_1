@@ -1,9 +1,14 @@
 import { createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut } from 'firebase/auth';
 import { createContext, useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { auth } from '../firebase/firebase.config';
+import axios from 'axios';
+import getBaseUrl from '../utils/baseURL';
+import {jwtDecode} from "jwt-decode"; // Correct default import
 
 const AuthContext = createContext();
-export const useAuth = () =>{
+
+export const useAuth = () => {
     return useContext(AuthContext);
 }
 
@@ -11,13 +16,23 @@ const googleProvider = new GoogleAuthProvider();
 
 // authProvider
 
-const AuthProvide = ({children}) => {
+const AuthProvide = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(null)
     const [loading, setLoading] = useState(true)
+    const [userRole, setUserRole] = useState(null);
+    const navigate = useNavigate();
 
     // register a user
-    const registerUser = async (email, password) => {
-        return await createUserWithEmailAndPassword(auth, email, password)
+    const registerUser = async (email, password, username) => {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+        // Send user data to backend
+        await axios.post(`${getBaseUrl()}/api/auth/register`, {
+            uid: userCredential.user.uid,
+            email,
+            username,
+            role: 'user'
+        })
+        return userCredential
     }
 
     // login a user
@@ -32,36 +47,64 @@ const AuthProvide = ({children}) => {
 
     // logout a user
     const logoutUser = async () => {
-        return await signOut(auth)
+        try {
+            await signOut(auth);
+            localStorage.removeItem('token');
+            setCurrentUser(null);
+            setUserRole(null);
+            navigate("/login"); // Redirect to login page
+        } catch (error) {
+            console.error("Error logging out:", error);
+        }
     }
 
     // manage user 
     useEffect(() => {
-        const unsubcribe = onAuthStateChanged(auth, (user) => {
-            setCurrentUser(user)
-            setLoading(false)
+        const checkAuthState = async () => {
+            const token = localStorage.getItem('token');
+            if (token) {
+                // Decode the token to get user info
+                const decodedToken = jwtDecode(token); // Use jwtDecode as default
+                setCurrentUser({ uid: decodedToken.uid, email: decodedToken.email });
+                setUserRole(decodedToken.role);
+                setLoading(false);
+            } else {
+                // ...existing Firebase auth state change logic...
+                const unsubscribe = onAuthStateChanged(auth, async (user) => {
+                    setCurrentUser(user);
+                    setLoading(false);
 
-            if (user) {
-                console.log(user)
-                const {email, displayName, photoURL} = user
-                const userData = {
-                    email,
-                    username: displayName,
-                    photo: photoURL
-                }      
+                    if (user) {
+                        try {
+                            // Fetch user role from backend
+                            const response = await axios.get(`${getBaseUrl()}/api/auth/${user.uid}`);
+                            const role = response.data.role;
+                            setUserRole(role);
+                        } catch (error) {
+                            console.error("Failed to fetch user role", error);
+                        }
+                    } else {
+                        setUserRole(null);
+                    }
+                });
+                return () => unsubscribe();
             }
-        })
-        return () => unsubcribe()
-    }, [])
+        };
+        checkAuthState();
+    }, []);
 
     const value = {
         currentUser,
+        userRole,
         loading,
         registerUser,
         loginUser,
         googleSignIn,
-        logoutUser
+        logoutUser,
+        setCurrentUser,    
+        setUserRole        
     }
+
     return (
         <AuthContext.Provider value={value}>
             {children}

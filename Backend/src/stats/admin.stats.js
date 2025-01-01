@@ -21,6 +21,9 @@ router.get("/", async (req, res) => {
             }
         ]);
 
+        const completedOrdersCount = await Order.countDocuments({ status: 'completed' });
+        const ordersLeft = totalOrders - completedOrdersCount;
+
         // 4. Trending books statistics: 
         const trendingBooksCount = await Book.aggregate([
             { $match: { trending: true } },  // Match only trending books
@@ -45,12 +48,28 @@ router.get("/", async (req, res) => {
             { $sort: { _id: 1 } }  
         ]);
 
+        // 7. Daily sales (group by day and sum total sales for each day)
+        const dailySales = await Order.aggregate([
+            {
+                $group: {
+                    _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },  // Group by date
+                    totalSales: { $sum: "$totalPrice" },  // Sum totalPrice for each day
+                    totalOrders: { $sum: 1 }  // Count total orders for each day
+                }
+            },
+            { $sort: { _id: 1 } }  // Sort by date ascending
+        ]);
+
         // Result summary
         res.status(200).json({  totalOrders,
+            completedOrders: completedOrdersCount,
+            ordersLeft,
             totalSales: totalSales[0]?.totalSales || 0,
             trendingBooks,
             totalBooks,
-            monthlySales, });
+            monthlySales, 
+            dailySales
+        });
       
     } catch (error) {
         console.error("Error fetching admin stats:", error);

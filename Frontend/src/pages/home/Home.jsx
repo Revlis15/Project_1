@@ -1,6 +1,5 @@
 
-import { Banner } from './Banner'
-import New from './New'
+import Banner from './Banner'
 import Recommended from './Recommended'
 import TopSell from './TopSell'
 
@@ -10,7 +9,7 @@ const Home = () => {
         <Banner/>
         <TopSell/>
         <Recommended/>
-        <New/>
+
     </>
   )
 }

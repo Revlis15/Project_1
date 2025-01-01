@@ -1,5 +1,5 @@
 const express = require('express');
-const { postABook, getAllBooks, getABook, updateBook, deleteBook } = require('./book.controller');
+const { postABook, getAllBooks, getABook, updateBook, deleteBook, searchBook } = require('./book.controller');
 const router = express.Router();
 const { verifyAdminToken } = require('../middleware/verifyAdminToken')
 
@@ -25,5 +25,8 @@ router.put('/edit/:id', verifyAdminToken, updateBook);
 
 // delete book
 router.delete('/delete/:id', verifyAdminToken, deleteBook);
+
+// search Book
+router.get('/search', searchBook);
 
 module.exports = router;

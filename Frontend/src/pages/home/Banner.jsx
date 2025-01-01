@@ -1,7 +1,7 @@
 
 import bannerImg from '../../assets/banner.png'
 
-export const Banner = () => {
+const Banner = () => {
   return (
     <div className=' flex flex-col md:flex-row-reverse py-16 justify-between items-center gap-12'>
 
@@ -23,3 +23,5 @@ export const Banner = () => {
     </div>
   )
 }
+
+export default Banner;

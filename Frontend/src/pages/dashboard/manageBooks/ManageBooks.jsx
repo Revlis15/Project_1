@@ -28,8 +28,8 @@ const ManageBooks = () => {
     };
 
   return (
-    <section className="py-1 bg-blueGray-50">
-        <div className="w-full xl:w-8/12 mb-12 xl:mb-0 px-4 mx-auto mt-24">
+    <section className=" bg-blueGray-50">
+        <div className="w-full xl:w-8/12 mb-12 xl:mb-0 px-4 mx-auto mt-12">
             <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded ">
                 <div className="rounded-t mb-0 px-4 py-3 border-0">
                     <div className="flex flex-wrap items-center">
@@ -42,8 +42,8 @@ const ManageBooks = () => {
                     </div>
                 </div>
 
-                <div className="block w-full overflow-x-auto">
-                    <table className="items-center bg-transparent w-full border-collapse ">
+                <div className="block w-full overflow-x-auto overflow-y-auto max-h-96">
+                    <table className="items-center bg-transparent w-full border-collapse leading-normal">
                         <thead>
                             <tr>
                                 <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
